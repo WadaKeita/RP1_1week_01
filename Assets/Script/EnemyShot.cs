@@ -19,9 +19,9 @@ public class EnemyManagement : MonoBehaviour
     [SerializeField] float enemyMoveSpeed = 3f;  //敵の移動速度
     [Header("攻撃タイプが変わる時のタイマー")]
     [SerializeField] float TypeTime = 0f;  //時間が経ったらshotからAttackに切り替える変数
-    //[SerializeField] float attackTypeTime = 0f;
-   // [SerializeField]  bool isFinish = false;
-    //[SerializeField]  bool isAttack = false;
+                                           //[SerializeField] float attackTypeTime = 0f;
+                                           // [SerializeField]  bool isFinish = false;
+                                           //[SerializeField]  bool isAttack = false;
     Rigidbody2D enemyRB; //敵のリジッドボディ
     float enemyShotDelayReset = 0, enemyShotDelay = 0;  //弾の発射間隔の初期値,発射間隔の時間
     enum EnemyMoveType { Shot, Attack } //敵の動きの種類
@@ -31,7 +31,7 @@ public class EnemyManagement : MonoBehaviour
     private int direction = 1;
     #endregion
 
-   
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,7 +49,7 @@ public class EnemyManagement : MonoBehaviour
         //弾のコピーっを生成
         GameObject bulletClone = Instantiate(enemyBullet, firePos.position, Quaternion.identity);
         //弾のコピーのRigidBodyにベクトルを与える
-        bulletClone.GetComponent<Rigidbody2D>().velocity = transform.right* enemyShotSpeed;
+        bulletClone.GetComponent<Rigidbody2D>().velocity = transform.right * enemyShotSpeed;
     }
     #endregion
 
@@ -57,7 +57,7 @@ public class EnemyManagement : MonoBehaviour
     {
 
         //enemyRB.velocity = transform.right * enemyMoveSpeed;
-        if (transform.position.x >= Camera.main.ViewportToWorldPoint(new Vector2(1,0)).x)
+        if (transform.position.x + transform.localScale.x / 2 >= Camera.main.ViewportToWorldPoint(new Vector2(1, 0)).x)
         {
             if (transform.rotation.z < 0)
             {
@@ -68,7 +68,7 @@ public class EnemyManagement : MonoBehaviour
                 direction = -1;
             }
         }
-        if (transform.position.x <= Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).x)
+        if (transform.position.x- transform.localScale.x / 2 <= Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).x)
         {
             if (transform.rotation.z < 0)
             {
@@ -110,11 +110,11 @@ public class EnemyManagement : MonoBehaviour
     void Update()
     {
 
-      
+
         switch (type)
         {
             case EnemyMoveType.Shot:
-               
+
 
                 //弾の発射----------------------
                 enemyShotDelay += Time.deltaTime;
@@ -129,12 +129,12 @@ public class EnemyManagement : MonoBehaviour
                 }
 
                 if (TypeTime >= 8)
-                   {
-                   type = EnemyMoveType.Attack;
-                   TypeTime = 0;
-                   }
-            
-            break;
+                {
+                    type = EnemyMoveType.Attack;
+                    TypeTime = 0;
+                }
+
+                break;
 
             case EnemyMoveType.Attack:
                 TypeTime += Time.deltaTime;
@@ -144,13 +144,13 @@ public class EnemyManagement : MonoBehaviour
 
                 if (TypeTime >= 7)
                 {
-                 type = EnemyMoveType.Shot;
-                 TypeTime = 0;
+                    type = EnemyMoveType.Shot;
+                    TypeTime = 0;
                     enemyRB.velocity = Vector3.zero;
                 }
 
 
-               break;
+                break;
 
 
         }
