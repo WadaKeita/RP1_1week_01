@@ -57,7 +57,7 @@ public class EnemyManagement : MonoBehaviour
     {
 
         //enemyRB.velocity = transform.right * enemyMoveSpeed;
-        if (transform.position.x >= _RightEdge.position.x)
+        if (transform.position.x >= Camera.main.ViewportToWorldPoint(new Vector2(1,0)).x)
         {
             if (transform.rotation.z < 0)
             {
@@ -68,7 +68,7 @@ public class EnemyManagement : MonoBehaviour
                 direction = -1;
             }
         }
-        if (transform.position.x <= _LeftEdge.position.x)
+        if (transform.position.x <= Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).x)
         {
             if (transform.rotation.z < 0)
             {
@@ -117,8 +117,8 @@ public class EnemyManagement : MonoBehaviour
                
 
                 //’e‚Ì”­ŽË----------------------
-                enemyShotDelay += 1.0f*Time.deltaTime;
-                TypeTime += 1.0f*Time.deltaTime;
+                enemyShotDelay += Time.deltaTime;
+                TypeTime += Time.deltaTime;
 
                 //’e‚ª”­ŽË‚³‚ê‚é
                 if (enemyShotDelay >= shotThrehold)
@@ -128,7 +128,7 @@ public class EnemyManagement : MonoBehaviour
                     enemyShotDelay = enemyShotDelayReset;
                 }
 
-                if (TypeTime >= 10)
+                if (TypeTime >= 8)
                    {
                    type = EnemyMoveType.Attack;
                    TypeTime = 0;
@@ -137,12 +137,12 @@ public class EnemyManagement : MonoBehaviour
             break;
 
             case EnemyMoveType.Attack:
-                TypeTime += 1.0f * Time.deltaTime;
+                TypeTime += Time.deltaTime;
 
                 //“G‚ÌˆÚ“®
                 EnemyMove();
 
-                if (TypeTime >= 10)
+                if (TypeTime >= 7)
                 {
                  type = EnemyMoveType.Shot;
                  TypeTime = 0;

@@ -117,7 +117,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -180,7 +180,6 @@ MonoBehaviour:
   enemyBullet: {fileID: 3601315325822848051, guid: 445a0241bf80a8246bf0863d933c45da, type: 3}
   firePos: {fileID: 7927593353809339480}
   shotThrehold: 1
-  shotTime: 0
   enemyMoveSpeed: 5
   TypeTime: 0
   _LeftEdge: {fileID: 0}
