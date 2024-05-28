@@ -123,6 +123,39 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &185878841
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 185878842}
+  m_Layer: 0
+  m_Name: point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &185878842
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 185878841}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.6641903, y: 1.748582, z: 0.01033709}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1943715632}
+  - {fileID: 222258991}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &195542414
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,6 +240,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &222258990
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 222258991}
+  m_Layer: 0
+  m_Name: LeftEdge
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &222258991
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 222258990}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -11.75, y: -2.37, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 185878842}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &452344877
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,6 +393,12 @@ MonoBehaviour:
   shotThrehold: 1
   shotTime: 0
   enemyMoveSpeed: 5
+  shotTypeTime: 0
+  attackTypeTime: 0
+  isShot: 1
+  isAttack: 0
+  _LeftEdge: {fileID: 222258991}
+  _RightEdge: {fileID: 1943715632}
 --- !u!50 &498974355
 Rigidbody2D:
   serializedVersion: 4
@@ -559,7 +629,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.64, z: -10}
+  m_LocalPosition: {x: 1.5, y: -0.64, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -681,12 +751,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b68035a25f1f0674e856a703ff817dc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyShotSpeed: 2
+  enemyShotSpeed: 5
   enemyBullet: {fileID: 3601315325822848051, guid: 445a0241bf80a8246bf0863d933c45da, type: 3}
   firePos: {fileID: 1590945305}
   shotThrehold: 1
   shotTime: 0
   enemyMoveSpeed: 5
+  shotTypeTime: 0
+  attackTypeTime: 0
+  isShot: 1
+  isAttack: 0
+  _LeftEdge: {fileID: 222258991}
+  _RightEdge: {fileID: 1943715632}
 --- !u!50 &646998431
 Rigidbody2D:
   serializedVersion: 4
@@ -869,6 +945,12 @@ MonoBehaviour:
   shotThrehold: 1
   shotTime: 0
   enemyMoveSpeed: 5
+  shotTypeTime: 0
+  attackTypeTime: 0
+  isShot: 1
+  isAttack: 0
+  _LeftEdge: {fileID: 222258991}
+  _RightEdge: {fileID: 1943715632}
 --- !u!50 &862087446
 Rigidbody2D:
   serializedVersion: 4
@@ -1051,6 +1133,12 @@ MonoBehaviour:
   shotThrehold: 1
   shotTime: 0
   enemyMoveSpeed: 5
+  shotTypeTime: 0
+  attackTypeTime: 0
+  isShot: 1
+  isAttack: 0
+  _LeftEdge: {fileID: 222258991}
+  _RightEdge: {fileID: 1943715632}
 --- !u!50 &1475970217
 Rigidbody2D:
   serializedVersion: 4
@@ -1279,6 +1367,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 646998434}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+--- !u!1 &1943715631
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1943715632}
+  m_Layer: 0
+  m_Name: RightEdge
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1943715632
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943715631}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 13.41, y: -1.81, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 185878842}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1288,3 +1407,4 @@ SceneRoots:
   - {fileID: 498974358}
   - {fileID: 1475970220}
   - {fileID: 862087449}
+  - {fileID: 185878842}

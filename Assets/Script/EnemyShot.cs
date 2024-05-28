@@ -17,9 +17,18 @@ public class EnemyManagement : MonoBehaviour
     #region var-EnemyInternal
     [Header("“G‚ÌˆÚ“®ŠÖ˜A")]
     [SerializeField] float enemyMoveSpeed = 3f;  //“G‚ÌˆÚ“®‘¬“x
+    [Header("UŒ‚ƒ^ƒCƒv‚ª•Ï‚í‚é‚Ìƒ^ƒCƒ}[")]
+    [SerializeField] float TypeTime = 0f;  //ŠÔ‚ªŒo‚Á‚½‚çshot‚©‚çAttack‚ÉØ‚è‘Ö‚¦‚é•Ï”
+    //[SerializeField] float attackTypeTime = 0f;
+   // [SerializeField]  bool isFinish = false;
+    //[SerializeField]  bool isAttack = false;
     Rigidbody2D enemyRB; //“G‚ÌƒŠƒWƒbƒhƒ{ƒfƒB
     float enemyShotDelayReset = 0, enemyShotDelay = 0;  //’e‚Ì”­ËŠÔŠu‚Ì‰Šú’l,”­ËŠÔŠu‚ÌŠÔ
     enum EnemyMoveType { Shot, Attack } //“G‚Ì“®‚«‚Ìí—Ş
+    EnemyMoveType type = EnemyMoveType.Shot;
+    [SerializeField] private Transform _LeftEdge;
+    [SerializeField] private Transform _RightEdge;
+    private int direction = 1;
     #endregion
 
    
@@ -33,16 +42,8 @@ public class EnemyManagement : MonoBehaviour
         //gameManager=GameObject.FindTag("GameManager").GetComponent<GameManager>()
     }
 
-    #region FixUpdate
-    private void FixedUpdate()
-    {
-        //“G‚ÌˆÚ“®:ˆø”@@“G‚ÌˆÚ“®í—Ş
-       // EnemyMove(moveType);
-    }
-    #endregion
-
     #region enemyShot
-    //“G‚Ì’e‚Ì”­Ë
+    //“G‚Ì’e‚Ì”­ËƒRƒs[‚Æ‚©
     void EnemyShot(Transform firePos)
     {
         //’e‚ÌƒRƒs[‚Á‚ğ¶¬
@@ -52,78 +53,106 @@ public class EnemyManagement : MonoBehaviour
     }
     #endregion
 
-
-    //“G‚ğ“®‚©‚·ŠÖ”-----------------------
     void EnemyMove()         //(int type_Move)
     {
-        // switch(type_Move)
-        // {
-        //     case (int)EnemyMoveType.Shot://“G‚ª‚½‚Ü‚ğŒ‚‚Á‚Ä‚­‚é
-        //
-        //
-        //
-        //     break;
-        //
-        //     case (int)EnemyMoveType.Attack://“G‚ª“®‚¢‚Ä‚­‚é
-        //
-            enemyRB.velocity = new Vector2(-enemyMoveSpeed, 0);
-        //     //enemyRB.velocity = new Vector2(-enemyMoveSpeed+player.transform.position.x, player.transform.position.y-transform.position.y);
-        //
-        //     break;
-        //
-        //     default:
-        //         //ŠY“–‚È‚µ‚Ìê‡
-        //     break;
-        //
+
+        //enemyRB.velocity = transform.right * enemyMoveSpeed;
+        if (transform.position.x >= _RightEdge.position.x)
+        {
+            if (transform.rotation.z < 0)
+            {
+                direction = 1;
+            }
+            else
+            {
+                direction = -1;
+            }
+        }
+        if (transform.position.x <= _LeftEdge.position.x)
+        {
+            if (transform.rotation.z < 0)
+            {
+                direction = -1;
+            }
+            else
+            {
+                direction = 1;
+            }
+        }
+
+        enemyRB.velocity = transform.right * enemyMoveSpeed * direction;
+
     }
 
+    //
     //“G‚Ì“–‚½‚è”»’è
-   // private void OnTriggerEnter2D(Collider2D collision)
-   // {
-   //     //ƒvƒŒƒCƒ„[‚ÆÚG‚µ‚½ê‡
-   //     if (collision.gameObject.CompareTag("Player"))
-   //     {
-   //         //©g‚ğ”jŠü
-   //         Destroy(gameObject);
-   //         //ÚG‚µ‚½ƒvƒŒƒCƒ„[‚ğ”jŠü
-   //         Destroy(collision.gameObject);
-   //     }
-   //     //ƒvƒŒƒCƒ„[‚Ì’e‚ÆÚG‚µ‚½ê‡
-   //     else if (collision.gameObject.CompareTag("PlayerBullet"))
-   //     {
-   //         //©g‚ğ”jŠü
-   //         Destroy(gameObject);
-   //         //ÚG‚µ‚½ƒvƒŒƒCƒ„[‚Ì’e‚ğ”jŠü
-   //         Destroy(collision.gameObject);
-   //
-   //     }
-   // }
+    // private void OnTriggerEnter2D(Collider2D collision)
+    // {
+    //     //ƒvƒŒƒCƒ„[‚ÆÚG‚µ‚½ê‡
+    //     if (collision.gameObject.CompareTag("Player"))
+    //     {
+    //         //©g‚ğ”jŠü
+    //         Destroy(gameObject);
+    //         //ÚG‚µ‚½ƒvƒŒƒCƒ„[‚ğ”jŠü
+    //         Destroy(collision.gameObject);
+    //     }
+    //     //ƒvƒŒƒCƒ„[‚Ì’e‚ÆÚG‚µ‚½ê‡
+    //     else if (collision.gameObject.CompareTag("PlayerBullet"))
+    //     {
+    //         //©g‚ğ”jŠü
+    //         Destroy(gameObject);
+    //         //ÚG‚µ‚½ƒvƒŒƒCƒ„[‚Ì’e‚ğ”jŠü
+    //         Destroy(collision.gameObject);
+    //
+    //     }
+    // }
     // Update is called once per frame
     void Update()
     {
-       //“G‚ÌˆÚ“®
-       //EnemyMove();
 
-        //’e‚Ì”­Ë----------------------
-        enemyShotDelay += Time.deltaTime;
-
-        //
-        if (enemyShotDelay <= shotThrehold)
+      
+        switch (type)
         {
-            return;
-        }
-        shotTime += 1;
-        //’e‚ª”­Ë‚³‚ê‚é
-         if (shotTime % 2 == 0)
-         {
-             EnemyShot(firePos);
-         }
-       // if (Input.GetKey(KeyCode.Space))
-       // {
-       //     EnemyShot(firePos);
-       // }
-        //’e‚Ì”­ËŠÔŠu‚ÌƒŠƒZƒbƒg
-        enemyShotDelay = enemyShotDelayReset;
+            case EnemyMoveType.Shot:
+               
 
+                //’e‚Ì”­Ë----------------------
+                enemyShotDelay += 1.0f*Time.deltaTime;
+                TypeTime += 1.0f*Time.deltaTime;
+
+                //’e‚ª”­Ë‚³‚ê‚é
+                if (enemyShotDelay >= shotThrehold)
+                {
+                    EnemyShot(firePos);
+                    //’e‚Ì”­ËŠÔŠu‚ÌƒŠƒZƒbƒg
+                    enemyShotDelay = enemyShotDelayReset;
+                }
+
+                if (TypeTime >= 10)
+                   {
+                   type = EnemyMoveType.Attack;
+                   TypeTime = 0;
+                   }
+            
+            break;
+
+            case EnemyMoveType.Attack:
+                TypeTime += 1.0f * Time.deltaTime;
+
+                //“G‚ÌˆÚ“®
+                EnemyMove();
+
+                if (TypeTime >= 10)
+                {
+                 type = EnemyMoveType.Shot;
+                 TypeTime = 0;
+                    enemyRB.velocity = Vector3.zero;
+                }
+
+
+               break;
+
+
+        }
     }
 }
