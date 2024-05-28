@@ -70,7 +70,8 @@ public class PlayerBullet : MonoBehaviour
     void Update()
     {
         // EnterÉLÅ[Ç≈î≠éÀ
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (isShot == false && Input.GetKeyDown(KeyCode.Return) ||
+            isShot == false && Input.GetKeyDown(KeyCode.JoystickButton1))
         {
             rb.velocity = ShotDirection() * shotPower;
             isShot = true;

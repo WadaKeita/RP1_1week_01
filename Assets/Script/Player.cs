@@ -9,9 +9,9 @@ public class Player : MonoBehaviour
 
     //GameObject playerArea;
 
-    private float jumpPower = 10;
+    private float jumpPower = 15;
     private float moveVelocity = 0;
-    private float moveSpeed = 3;
+    private float moveSpeed = 5;
 
     private bool isCanJump;
     private bool isJump;
@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     // 衝突判定
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (this.tag == ("Player") && collision.gameObject.tag == ("Ground"))
+        if (collision.gameObject.tag == ("Ground"))
         {
             isJump = false;
             Debug.Log("衝突した");
@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     private void OnCollisionStay2D(Collision2D collision)
     {
 
-        if (this.tag == ("Player") && collision.gameObject.tag == ("Ground"))
+        if (collision.gameObject.tag == ("Ground"))
         {
             ContactPoint2D[] contacts = collision.contacts; // 衝突している点の情報が複数格納されている
             Vector3 otherNormal = contacts[0].normal;   // 0番目の衝突情報から、衝突している点の方線を取得。
@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
     // 離脱判定
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (this.tag == ("Player") && collision.gameObject.tag == ("Ground"))
+        if (collision.gameObject.tag == ("Ground"))
         {
             if (isJump == true)
             {
@@ -58,31 +58,61 @@ public class Player : MonoBehaviour
 
     private void PlayerMove()
     {
+        // ---------- 移動 ----------
         moveVelocity = 0;
-        if (Input.GetKey(KeyCode.D))
-        {
-            moveVelocity += moveSpeed;
-            if (playerRb.velocity.y < 0)
-            {
-                isCanJump = false;
-            }
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            moveVelocity += -moveSpeed;
-            if (playerRb.velocity.y < 0)
-            {
-                isCanJump = false;
-            }
-        }
-        playerRb.velocity = new Vector2(moveVelocity, playerRb.velocity.y);
 
-        if (Input.GetKeyDown(KeyCode.Space) && isCanJump == true)
+        // --- スティック操作 ---
+        if (Input.GetAxis("L_Stick_H") != 0)
+        {
+            // 左右移動
+            moveVelocity += moveSpeed * Input.GetAxis("Horizontal");
+
+            // 移動時に地面から離れたらジャンプが出来ないようにする
+            if (playerRb.velocity.y < 0)
+            {
+                isCanJump = false;
+            }
+        }
+        else
+        {
+            // --- キーボード操作 ---
+            // 右移動
+            if (Input.GetKey(KeyCode.D))
+            {
+                moveVelocity += moveSpeed;
+
+                // 移動時に地面から離れたらジャンプが出来ないようにする
+                if (playerRb.velocity.y < 0)
+                {
+                    isCanJump = false;
+                }
+            }
+            // 左移動
+            if (Input.GetKey(KeyCode.A))
+            {
+                moveVelocity += -moveSpeed;
+
+                // 移動時に地面から離れたらジャンプが出来ないようにする
+                if (playerRb.velocity.y < 0)
+                {
+                    isCanJump = false;
+                }
+            }
+        }
+
+        playerRb.velocity = new Vector2(moveVelocity, playerRb.velocity.y);
+        // ------------------------------
+
+        // ---------- ジャンプ ----------
+        if (isCanJump == true && Input.GetKeyDown(KeyCode.Space) || // キーボード
+            isCanJump == true && Input.GetKeyDown(KeyCode.JoystickButton0) // コントローラー
+            )
         {
             playerRb.velocity = new Vector2(playerRb.velocity.x, jumpPower);
             isCanJump = false;
             isJump = true;
         }
+        // ------------------------------
     }
 
     // Start is called before the first frame update
@@ -97,7 +127,19 @@ public class Player : MonoBehaviour
     void Update()
     {
         PlayerMove();
-        //playerArea.transform.position = player.transform.position;
-
+        //Trigger
+        float tri = Input.GetAxis("L_R_Trigger");
+        if (tri < 0)
+        {
+            Debug.Log("L trigger:" + tri);
+        }
+        else if (tri > 0)
+        {
+            Debug.Log("R trigger:" + tri);
+        }
+        else
+        {
+            Debug.Log("  trigger:none");
+        }
     }
 }

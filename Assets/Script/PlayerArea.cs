@@ -21,7 +21,10 @@ public class PlayerArea : MonoBehaviour
     // 回転させる
     void Rotation()
     {
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.LeftArrow)
+            || Input.GetKey(KeyCode.JoystickButton4)
+            || Input.GetAxis("L_R_Trigger") < 0
+            )
         {
             // 指定オブジェクトを中心に回転する
             this.transform.RotateAround(
@@ -29,7 +32,10 @@ public class PlayerArea : MonoBehaviour
                 RotateAxis,
                 360.0f / (1.0f / SpeedFactor) * Time.deltaTime);
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow)
+            || Input.GetKey(KeyCode.JoystickButton5)
+            || Input.GetAxis("L_R_Trigger") > 0
+            )
         {
             // 指定オブジェクトを中心に回転する
             this.transform.RotateAround(
