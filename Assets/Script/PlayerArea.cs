@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
 public class PlayerArea : MonoBehaviour
 {
     GameObject playerArea;
+    public GameObject playerBulletPrefab;
 
     // âÒì]ópÇÃïœêî
     private Vector3 RotateAxis = Vector3.forward;
@@ -17,6 +19,34 @@ public class PlayerArea : MonoBehaviour
         playerArea = GameObject.FindGameObjectWithTag("PlayerArea");
         playerArea.transform.parent = GameObject.FindGameObjectWithTag("Player").transform;
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == ("EnemyBullet"))
+        {
+            Instantiate(playerBulletPrefab, collision.gameObject.transform.position, Quaternion.identity);
+            Destroy(collision.gameObject);
+        }
+
+    }
+
+    // ê⁄êGíÜîªíË
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+
+        if (collision.gameObject.tag == ("Ground"))
+        {
+        }
+    }
+
+    // ó£íEîªíË
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == ("Ground"))
+        {
+        }
+    }
+
 
     // âÒì]Ç≥ÇπÇÈ
     void Rotation()

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3692447216767299919}
   - component: {fileID: 1582891024754577581}
   - component: {fileID: 2767926209649259228}
+  - component: {fileID: 876154846507923760}
   m_Layer: 0
   m_Name: PlayerArea
   m_TagString: PlayerArea
@@ -97,3 +98,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3965edf71a9c60e4aa46a048d7d804b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerBulletPrefab: {fileID: 610016672681540908, guid: b8e0c135180b8f74c94a1aeabc72a818, type: 3}
+--- !u!58 &876154846507923760
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6056286890735909370}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
