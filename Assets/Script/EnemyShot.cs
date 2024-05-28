@@ -10,7 +10,7 @@ public class EnemyManagement : MonoBehaviour
     [SerializeField] GameObject enemyBullet;   //敵のリジッドボディ
     [SerializeField] Transform firePos;         //敵の弾の発射ポイント
     [SerializeField] float shotThrehold = 1f;   //弾の発射間隔
-    [SerializeField] float shotTime = 0f;  
+    //[SerializeField] float shotTime = 0f;  
     #endregion
 
 
