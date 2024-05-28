@@ -14,14 +14,12 @@ public class Player : MonoBehaviour
     private float moveSpeed = 5;
 
     private bool isCanJump;
-    private bool isJump;
 
     // è’ìÀîªíË
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == ("Ground"))
         {
-            isJump = false;
             Debug.Log("è’ìÀÇµÇΩ");
         }
     }
@@ -49,10 +47,7 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == ("Ground"))
         {
-            if (isJump == true)
-            {
-                isCanJump = false;
-            }
+            isCanJump = false;
         }
     }
 
@@ -110,7 +105,6 @@ public class Player : MonoBehaviour
         {
             playerRb.velocity = new Vector2(playerRb.velocity.x, jumpPower);
             isCanJump = false;
-            isJump = true;
         }
         // ------------------------------
     }
@@ -127,19 +121,5 @@ public class Player : MonoBehaviour
     void Update()
     {
         PlayerMove();
-        //Trigger
-        float tri = Input.GetAxis("L_R_Trigger");
-        if (tri < 0)
-        {
-            Debug.Log("L trigger:" + tri);
-        }
-        else if (tri > 0)
-        {
-            Debug.Log("R trigger:" + tri);
-        }
-        else
-        {
-            Debug.Log("  trigger:none");
-        }
     }
 }
