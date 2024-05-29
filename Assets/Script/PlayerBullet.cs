@@ -40,7 +40,6 @@ public class PlayerBullet : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-
     }
 
     // Update is called once per frame
@@ -55,6 +54,27 @@ public class PlayerBullet : MonoBehaviour
 
             // 親子関係を解除
             this.transform.parent = null;
+        }
+
+        // 画面外へ出たら削除する処理
+        if (isShot == true)
+        {
+            if (transform.position.x - transform.localScale.x / 2 >= Camera.main.ViewportToWorldPoint(new Vector2(1, 0)).x)
+            {
+                Destroy(gameObject);
+            }
+            if (transform.position.x + transform.localScale.x / 2 <= Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).x)
+            {
+                Destroy(gameObject);
+            }
+            if (transform.position.y - transform.localScale.y / 2 >= Camera.main.ViewportToWorldPoint(new Vector2(0, 1)).y)
+            {
+                Destroy(gameObject);
+            }
+            if (transform.position.y + transform.localScale.y / 2 <= Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).y)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
