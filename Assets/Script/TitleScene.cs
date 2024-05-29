@@ -17,7 +17,8 @@ public class TitleScene : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space)) {
         
-        SceneManager.LoadScene(nextSceneName);
+        FadeManager.Instance.LoadScene(nextSceneName, 1f);
+
         }
     }
 }
