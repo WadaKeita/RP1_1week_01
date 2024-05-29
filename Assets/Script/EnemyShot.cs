@@ -104,60 +104,54 @@ public class EnemyManagement : MonoBehaviour
 
     }
 
-    //
-    //敵の当たり判定
-    //  void OnTriggerEnter2D(Collider2D collision)
-    // {
-    //     //プレイヤーと接触した場合
-    //     if (collision.gameObject.CompareTag("Player"))
-    //     {
-    //         //敵HPの管理
-               //EnemyHpChanged((int)EnemyDmageType.damage,enemyHp,collision);
-    //     }
-    //     //プレイヤーの弾と接触した場合
-    //     else if (collision.gameObject.CompareTag("PlayerBullet"))
-    //     {
-    //        //敵のHp管理
-              //EnemyHpChanged((int)EnemyDmageType.damage,PlayerController.playerShotPower,collision);
-    //
-    //     }
-    // }
-    // Update is called once per frame
+    // 敵の当たり判定
+      void OnTriggerEnter2D(Collider2D collision)
+    {
+        //プレイヤーと接触した場合
+        if (collision.gameObject.tag ==("Player"))
+        {
+            //敵HPの管理
+            EnemyHpChanged((int)EnemyDamagetype.damage, enemyHp, collision);
+        }
+        //プレイヤーの弾と接触した場合
+        else if (collision.gameObject.tag ==("PlayerBullet"))
+        {
+            //敵のHp管理
+            EnemyHpChanged((int)EnemyDamagetype.damage, enemyDamage, collision);
 
-   //void EnemyHpChanged(int damageType,int volume,Collider2D collider)
-   //{
-   //    //ダメージの種類で分岐
-   //    switch (damageType)
-   //    {
-   //        //回復の場合(特になし)
-   //        case (int)EnemyDamagetype.heal:
-   //            //敵のHP回復処理
-   //
-   //        break;
-   //
-   //        //ダメージの場合
-   //        case (int)EnemyDamagetype.damage:
-   //            //ダメージ分を減算
-   //            enemyHp -= volume;
-   //
-   //            //接触オブジェクトがプレイヤーの弾の場合
-   //            if (collider.gameObject.CompareTag("PlayerBullet"))
-   //            {
-   //                //オブジェクトを破棄
-   //                Destroy(collider.gameObject);
-   //            }
-   //            //敵のHPが最小値以下になる場合
-   //            if(enemyHp<=enemyHpMin)
-   //            {
-   //                //敵が消える処理
-   //            }
-   //            break;
-   //
-   //        //該当なし
-   //        default:
-   //            break;
-   //    }
-   //}
+        }
+    }
+   // Update is called once per frame
+
+   void EnemyHpChanged(int damageType, int volume, Collider2D collider)
+    {
+        //ダメージの種類で分岐
+        switch (damageType)
+        {
+            //回復の場合(特になし)
+            case (int)EnemyDamagetype.heal:
+                //敵のHP回復処理
+
+                break;
+
+            //ダメージの場合
+            case (int)EnemyDamagetype.damage:
+                //ダメージ分を減算
+                enemyHp -= volume;
+
+                //敵のHPが最小値以下になる場合
+                if (enemyHp <= enemyHpMin)
+                {
+                    //敵が消える処理
+                    Destroy(this.gameObject);
+                }
+                break;
+
+            //該当なし
+            default:
+                break;
+        }
+    }
 
     void Update()
     {

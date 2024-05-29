@@ -34,37 +34,14 @@ public class PlayerBullet : MonoBehaviour
         return direction;
     }
 
-    // プレイヤーと連動して動く
-    //void InterLockPlayer()
-    //{
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == ("Enemy"))
+        {
+            Destroy(this.gameObject);
+        }
 
-    //    if (player.transform.position != prePosition)
-    //    {
-    //        this.transform.position += player.transform.position - prePosition;
-    //        prePosition = player.transform.position;
-    //    }
-    //}
-
-    // プレイヤーを中心に回転させる
-    //void Rotation()
-    //{
-    //    if (Input.GetKey(KeyCode.LeftArrow))
-    //    {
-    //        // 指定オブジェクトを中心に回転する
-    //        this.transform.RotateAround(
-    //            player.transform.position,
-    //            RotateAxis,
-    //            360.0f / (1.0f / SpeedFactor) * Time.deltaTime);
-    //    }
-    //    if (Input.GetKey(KeyCode.RightArrow))
-    //    {
-    //        // 指定オブジェクトを中心に回転する
-    //        this.transform.RotateAround(
-    //            player.transform.position,
-    //            RotateAxis,
-    //            -(360.0f / (1.0f / SpeedFactor) * Time.deltaTime));
-    //    }
-    //}
+    }
 
     // Update is called once per frame
     void Update()

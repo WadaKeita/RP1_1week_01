@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4751010976360290088}
   m_Layer: 0
   m_Name: EnemyLeft
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -184,6 +184,8 @@ MonoBehaviour:
   TypeTime: 0
   _LeftEdge: {fileID: 0}
   _RightEdge: {fileID: 0}
+  enemyHp: 10
+  enemyDamage: 1
 --- !u!1 &3186930050096616683
 GameObject:
   m_ObjectHideFlags: 0
