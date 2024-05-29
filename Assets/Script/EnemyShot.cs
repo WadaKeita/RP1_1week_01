@@ -8,12 +8,11 @@ public class EnemyManagement : MonoBehaviour
     [Header("敵の弾関連")]
     [SerializeField] float enemyShotSpeed = 2f; //敵の弾の発射スピード
     [SerializeField] GameObject enemyBullet;   //敵のリジッドボディ
-   // [SerializeField] GameObject explotion;
+                                               // [SerializeField] GameObject explotion;
     [SerializeField] Transform firePos;         //敵の弾の発射ポイント
     [SerializeField] float shotThrehold = 1f;   //弾の発射間隔
     //[SerializeField] float shotTime = 0f;  
     #endregion
-
 
     #region var-EnemyInternal
     [Header("敵の移動関連")]
@@ -30,6 +29,7 @@ public class EnemyManagement : MonoBehaviour
     [SerializeField] private Transform _LeftEdge;
     [SerializeField] private Transform _RightEdge;
     private int direction = 1;
+    private int reflection = 0;
 
     //--------------------------------------------------------------------------------------
     int enemyHpMin = 0;     //敵の最小HP
@@ -53,18 +53,28 @@ public class EnemyManagement : MonoBehaviour
     [SerializeField] GameObject enemyExplosion;
     #endregion
 
+    // クリア判定を取る用
+    GameObject enemyManager;
+    bool isClear = false;
+    GameObject player;
+    bool isPlayerDead = false;
 
     // Start is called before the first frame update
     void Start()
     {
         enemyRB = GetComponent<Rigidbody2D>();  //敵のリジッドボディを取得
         //プレイヤーを取得
-        //player=GameObject.FindWithtag("Player").GetComponet<Rigidbody2D>()
+        player = GameObject.FindWithTag("Player");
         //ゲームマネージャーを取得
         //gameManager=GameObject.FindTag("GameManager").GetComponent<GameManager>()
 
         //敵のHP
         enemyAttackDamage = attackDamage;
+
+
+        enemyManager = GameObject.FindGameObjectWithTag("EnemyManager");
+
+        isClear = false;
     }
 
     #region enemyShot
@@ -82,28 +92,33 @@ public class EnemyManagement : MonoBehaviour
     {
 
         //enemyRB.velocity = transform.right * enemyMoveSpeed;
-        if (transform.position.x + transform.localScale.x / 2 >= Camera.main.ViewportToWorldPoint(new Vector2(1, 0)).x)
+        if (transform.position.x + transform.localScale.x / 2 > Camera.main.ViewportToWorldPoint(new Vector2(1, 0)).x)
         {
             if (transform.rotation.z < 0)
             {
                 direction = 1;
+                transform.position = new Vector3(Camera.main.ViewportToWorldPoint(new Vector2(1, 0)).x - transform.localScale.x / 2 - 0.01f, transform.position.y, 0);
             }
             else
             {
                 direction = -1;
+                transform.position = new Vector3(Camera.main.ViewportToWorldPoint(new Vector2(1, 0)).x - transform.localScale.x / 2 - 0.01f, transform.position.y, 0);
             }
+            reflection++;
         }
-        if (transform.position.x - transform.localScale.x / 2 <= Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).x)
+        if (transform.position.x - transform.localScale.x / 2 < Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).x)
         {
             if (transform.rotation.z < 0)
             {
                 direction = -1;
-
+                transform.position = new Vector3(Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).x + (transform.localScale.x / 2) + 0.01f, transform.position.y, 0);
             }
             else
             {
                 direction = 1;
+                transform.position = new Vector3(Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).x + (transform.localScale.x / 2) + 0.01f, transform.position.y, 0);
             }
+            reflection++;
         }
 
         enemyRB.velocity = transform.right * enemyMoveSpeed * direction;
@@ -114,22 +129,22 @@ public class EnemyManagement : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         //プレイヤーと接触した場合
-        if (collision.gameObject.tag == ("Player"))
-        {
-            //爆発処理
-           // EnemyExplosion(collision);
+        //if (collision.gameObject.tag == ("Player"))
+        //{
+        //    //爆発処理
+        //    // EnemyExplosion(collision);
 
-            //敵HPの管理
-            EnemyHpChanged((int)EnemyDamagetype.damage, enemyHp, collision);
+        //    //敵HPの管理
+        //    EnemyHpChanged((int)EnemyDamagetype.damage, enemyHp, collision);
 
-            if (enemyHp == 0)
-            {
-                Instantiate(enemyExplosion,this.gameObject.transform.position, Quaternion.identity);
-                //Destroy(collision.gameObject);
-            }
-        }
+        //    if (enemyHp == 0)
+        //    {
+        //        Instantiate(enemyExplosion, this.gameObject.transform.position, Quaternion.identity);
+        //        //Destroy(collision.gameObject);
+        //    }
+        //}
         //プレイヤーの弾と接触した場合
-        else if (collision.gameObject.tag == ("PlayerBullet"))
+        if (collision.gameObject.tag == ("PlayerBullet"))
         {
             //爆発処理
             //nemyExplosion(collision);
@@ -194,50 +209,56 @@ public class EnemyManagement : MonoBehaviour
 
     void Update()
     {
-
-
-        switch (type)
+        if(player.GetComponent<Player>().PlayerIsDead() == true)
         {
-            case EnemyMoveType.Shot:
-
-
-                //弾の発射----------------------
-                enemyShotDelay += Time.deltaTime;
-                TypeTime += Time.deltaTime;
-
-                //弾が発射される
-                if (enemyShotDelay >= shotThrehold)
-                {
-                    EnemyShot(firePos);
-                    //弾の発射間隔のリセット
-                    enemyShotDelay = enemyShotDelayReset;
-                }
-
-                if (TypeTime >= 8)
-                {
-                    type = EnemyMoveType.Attack;
-                    TypeTime = 0;
-                }
-
-                break;
-
-            case EnemyMoveType.Attack:
-                TypeTime += Time.deltaTime;
-
-                //敵の移動
-                EnemyMove();
-
-                if (TypeTime >= 7)
-                {
-                    type = EnemyMoveType.Shot;
-                    TypeTime = 0;
-                    enemyRB.velocity = Vector3.zero;
-                }
-
-
-                break;
-
-
+            isPlayerDead = true;
+            enemyRB.velocity = Vector3.zero;
         }
+        if (isClear == false && isPlayerDead == false)
+        {
+            switch (type)
+            {
+                case EnemyMoveType.Shot:
+
+
+                    //弾の発射----------------------
+                    enemyShotDelay += Time.deltaTime;
+                    TypeTime += Time.deltaTime;
+
+                    //弾が発射される
+                    if (enemyShotDelay >= shotThrehold)
+                    {
+                        EnemyShot(firePos);
+                        //弾の発射間隔のリセット
+                        enemyShotDelay = enemyShotDelayReset;
+                    }
+
+                    if (TypeTime >= 8)
+                    {
+                        type = EnemyMoveType.Attack;
+                        reflection = 0;
+                        TypeTime = 0;
+                    }
+
+                    break;
+
+                case EnemyMoveType.Attack:
+                    TypeTime += Time.deltaTime;
+
+                    //敵の移動
+                    EnemyMove();
+
+                    if (reflection == 2)
+                    {
+                        type = EnemyMoveType.Shot;
+                        TypeTime = 0;
+                        enemyRB.velocity = Vector3.zero;
+                    }
+
+
+                    break;
+            }
+        }
+        isClear = enemyManager.GetComponent<EnemyManager>().IsClear();
     }
 }

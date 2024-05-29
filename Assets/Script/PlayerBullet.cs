@@ -13,6 +13,13 @@ public class PlayerBullet : MonoBehaviour
 
     private GameObject playerArea;
 
+
+    // クリア判定を取る用
+    GameObject enemyManager;
+    bool isClear = false;
+    GameObject player;
+    bool isPlayerDead = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +28,14 @@ public class PlayerBullet : MonoBehaviour
 
         // Areaと親子関係を持たせる
         this.transform.parent = playerArea.transform;
+
+
+        //プレイヤーを取得
+        player = GameObject.FindWithTag("Player");
+
+        enemyManager = GameObject.FindGameObjectWithTag("EnemyManager");
+
+        isClear = false;
     }
 
     private Vector3 ShotDirection()
@@ -45,36 +60,48 @@ public class PlayerBullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Enterキーで発射
-        if (isShot == false && Input.GetKeyDown(KeyCode.Return) ||
+
+        if (player.GetComponent<Player>().PlayerIsDead() == true)
+        {
+            isPlayerDead = true;
+            rb.velocity = Vector3.zero;
+        }
+
+        if (isClear == false && isPlayerDead == false)
+        {
+            // Enterキーで発射
+            if (isShot == false && Input.GetKeyDown(KeyCode.Return) ||
             isShot == false && Input.GetKeyDown(KeyCode.JoystickButton1))
-        {
-            rb.velocity = ShotDirection() * shotPower;
-            isShot = true;
+            {
+                rb.velocity = ShotDirection() * shotPower;
+                isShot = true;
 
-            // 親子関係を解除
-            this.transform.parent = null;
+                // 親子関係を解除
+                this.transform.parent = null;
+            }
+
+            // 画面外へ出たら削除する処理
+            if (isShot == true)
+            {
+                if (transform.position.x - transform.localScale.x / 2 >= Camera.main.ViewportToWorldPoint(new Vector2(1, 0)).x)
+                {
+                    Destroy(gameObject);
+                }
+                if (transform.position.x + transform.localScale.x / 2 <= Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).x)
+                {
+                    Destroy(gameObject);
+                }
+                if (transform.position.y - transform.localScale.y / 2 >= Camera.main.ViewportToWorldPoint(new Vector2(0, 1)).y)
+                {
+                    Destroy(gameObject);
+                }
+                if (transform.position.y + transform.localScale.y / 2 <= Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).y)
+                {
+                    Destroy(gameObject);
+                }
+            }
         }
 
-        // 画面外へ出たら削除する処理
-        if (isShot == true)
-        {
-            if (transform.position.x - transform.localScale.x / 2 >= Camera.main.ViewportToWorldPoint(new Vector2(1, 0)).x)
-            {
-                Destroy(gameObject);
-            }
-            if (transform.position.x + transform.localScale.x / 2 <= Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).x)
-            {
-                Destroy(gameObject);
-            }
-            if (transform.position.y - transform.localScale.y / 2 >= Camera.main.ViewportToWorldPoint(new Vector2(0, 1)).y)
-            {
-                Destroy(gameObject);
-            }
-            if (transform.position.y + transform.localScale.y / 2 <= Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).y)
-            {
-                Destroy(gameObject);
-            }
-        }
+        isClear = enemyManager.GetComponent<EnemyManager>().IsClear();
     }
 }

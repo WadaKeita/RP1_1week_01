@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -17,15 +18,25 @@ public class Player : MonoBehaviour
     private bool isCanJump;
     private bool isClear;
 
+    private int playerHP = 3;
+    private bool isDead = false;
+
     // è’ìÀîªíË
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == ("Ground"))
+        if (collision.gameObject.tag == ("Enemy"))
         {
+            playerHP--;
+            if (playerHP <= 0)
+            {
+                isDead = true;
+                playerRb.velocity = Vector3.zero;
+                playerRb.gravityScale = 0;
+                Debug.Log("dead");
+            }
             Debug.Log("è’ìÀÇµÇΩ");
         }
     }
-
     // ê⁄êGíÜîªíË
     private void OnCollisionStay2D(Collision2D collision)
     {
@@ -51,6 +62,11 @@ public class Player : MonoBehaviour
         {
             isCanJump = false;
         }
+    }
+
+    public bool PlayerIsDead()
+    {
+        return isDead;
     }
 
     private void PlayerMove()
@@ -126,8 +142,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerMove();
-
+        if (isClear == false && isDead == false)
+        {
+            PlayerMove();
+        }
         isClear = enemyManager.GetComponent<EnemyManager>().IsClear();
         //if (clear) { Debug.Log("clear!"); }
     }
