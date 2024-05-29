@@ -6,7 +6,7 @@ public class SampleScane : MonoBehaviour
 {
     GameObject enemyManager;
     private bool isClear;
-    public string nextSceneName;
+    public string clearSceneName;
     //Start is called before the first frame update
     void Start()
     {
@@ -20,7 +20,7 @@ public class SampleScane : MonoBehaviour
     {
         if (enemyManager.GetComponent<EnemyManager>().IsClear()==true && isClear==false)
         {
-            FadeManager.Instance.LoadScene(nextSceneName, 1f);
+            FadeManager.Instance.LoadScene(clearSceneName, 1f);
             isClear=true;
         }
         
