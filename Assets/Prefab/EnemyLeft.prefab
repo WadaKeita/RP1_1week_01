@@ -77,8 +77,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.627451, g: 0.9921569, b: 0.6745098, a: 1}
+  m_Sprite: {fileID: 21300000, guid: dfea0b061bf44994ba27e5555f98a6b9, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -186,6 +186,7 @@ MonoBehaviour:
   _RightEdge: {fileID: 0}
   enemyHp: 10
   enemyDamage: 1
+  enemyExplosion: {fileID: 0}
 --- !u!1 &3186930050096616683
 GameObject:
   m_ObjectHideFlags: 0

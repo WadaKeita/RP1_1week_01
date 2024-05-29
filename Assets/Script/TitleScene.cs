@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class TitleScene : MonoBehaviour
 {
     public string nextSceneName;
+    bool isChange = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,10 +16,10 @@ public class TitleScene : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0)) {
+        if(Input.GetKeyDown(KeyCode.Space) && isChange == false || Input.GetKeyDown(KeyCode.JoystickButton0) && isChange==false) {
         
         FadeManager.Instance.LoadScene(nextSceneName, 1f);
-
+            isChange = true;
         }
     }
 }
