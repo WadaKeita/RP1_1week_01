@@ -17,8 +17,6 @@ public class PlayerBullet : MonoBehaviour
     // クリア判定を取る用
     GameObject enemyManager;
     bool isClear = false;
-    GameObject player;
-    bool isPlayerDead = false;
 
     // Start is called before the first frame update
     void Start()
@@ -29,9 +27,6 @@ public class PlayerBullet : MonoBehaviour
         // Areaと親子関係を持たせる
         this.transform.parent = playerArea.transform;
 
-
-        //プレイヤーを取得
-        player = GameObject.FindWithTag("Player");
 
         enemyManager = GameObject.FindGameObjectWithTag("EnemyManager");
 
@@ -61,13 +56,7 @@ public class PlayerBullet : MonoBehaviour
     void Update()
     {
 
-        if (player.GetComponent<Player>().PlayerIsDead() == true)
-        {
-            isPlayerDead = true;
-            rb.velocity = Vector3.zero;
-        }
-
-        if (isClear == false && isPlayerDead == false)
+        if (isClear == false )
         {
             // Enterキーで発射
             if (isShot == false && Input.GetKeyDown(KeyCode.Return) ||

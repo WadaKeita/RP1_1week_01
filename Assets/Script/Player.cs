@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -18,24 +19,26 @@ public class Player : MonoBehaviour
     private bool isCanJump;
     private bool isClear;
 
-    private int playerHP = 3;
-    private bool isDead = false;
 
     // 衝突判定
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == ("Enemy"))
-        {
-            playerHP--;
-            if (playerHP <= 0)
-            {
-                isDead = true;
-                playerRb.velocity = Vector3.zero;
-                playerRb.gravityScale = 0;
-                Debug.Log("dead");
-            }
-            Debug.Log("衝突した");
-        }
+        //if (this.gameObject.tag != ("PlayerArea") && collision.gameObject.tag == ("Enemy") && isDamage == false)
+        //{
+
+        //    // 赤色に変更する
+        //    gameObject.GetComponent<Renderer>().material.color = new Color(0.9f, 0.3f, 0.3f);
+
+        //    isDamage = true;
+        //    damageTime = 0;
+        //    playerHP--;
+        //    if (playerHP <= 0)
+        //    {
+        //        isDead = true;
+        //        playerRb.velocity = Vector3.zero;
+        //        playerRb.gravityScale = 0;
+        //    }
+        //}
     }
     // 接触中判定
     private void OnCollisionStay2D(Collision2D collision)
@@ -64,10 +67,10 @@ public class Player : MonoBehaviour
         }
     }
 
-    public bool PlayerIsDead()
-    {
-        return isDead;
-    }
+    //public bool PlayerIsDead()
+    //{
+    //    return isDead;
+    //}
 
     private void PlayerMove()
     {
@@ -114,6 +117,17 @@ public class Player : MonoBehaviour
         }
 
         playerRb.velocity = new Vector2(moveVelocity, playerRb.velocity.y);
+
+        if (transform.position.x + transform.localScale.x / 2 > Camera.main.ViewportToWorldPoint(new Vector2(1, 0)).x)
+        {
+
+            transform.position = new Vector3(Camera.main.ViewportToWorldPoint(new Vector2(1, 0)).x - transform.localScale.x / 2 - 0.01f, transform.position.y, 0);
+        }
+        if (transform.position.x - transform.localScale.x / 2 < Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).x)
+        {
+            transform.position = new Vector3(Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).x + (transform.localScale.x / 2) + 0.01f, transform.position.y, 0);
+
+        }
         // ------------------------------
 
         // ---------- ジャンプ ----------
@@ -142,9 +156,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isClear == false && isDead == false)
+        if (isClear == false)
         {
             PlayerMove();
+            
         }
         isClear = enemyManager.GetComponent<EnemyManager>().IsClear();
         //if (clear) { Debug.Log("clear!"); }

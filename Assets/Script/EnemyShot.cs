@@ -56,15 +56,11 @@ public class EnemyManagement : MonoBehaviour
     // クリア判定を取る用
     GameObject enemyManager;
     bool isClear = false;
-    GameObject player;
-    bool isPlayerDead = false;
 
     // Start is called before the first frame update
     void Start()
     {
         enemyRB = GetComponent<Rigidbody2D>();  //敵のリジッドボディを取得
-        //プレイヤーを取得
-        player = GameObject.FindWithTag("Player");
         //ゲームマネージャーを取得
         //gameManager=GameObject.FindTag("GameManager").GetComponent<GameManager>()
 
@@ -209,12 +205,7 @@ public class EnemyManagement : MonoBehaviour
 
     void Update()
     {
-        if(player.GetComponent<Player>().PlayerIsDead() == true)
-        {
-            isPlayerDead = true;
-            enemyRB.velocity = Vector3.zero;
-        }
-        if (isClear == false && isPlayerDead == false)
+        if (isClear == false)
         {
             switch (type)
             {
