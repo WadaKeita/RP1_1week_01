@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     GameObject player;
     public Rigidbody2D playerRb;
 
+    GameObject enemyManager;
     //GameObject playerArea;
 
     private float jumpPower = 15;
@@ -14,6 +15,7 @@ public class Player : MonoBehaviour
     private float moveSpeed = 5;
 
     private bool isCanJump;
+    private bool isClear;
 
     // è’ìÀîªíË
     private void OnCollisionEnter2D(Collision2D collision)
@@ -115,11 +117,18 @@ public class Player : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
 
         playerRb = gameObject.GetComponent<Rigidbody2D>();
+
+        enemyManager = GameObject.FindGameObjectWithTag("EnemyManager");
+
+        isClear = false;
     }
 
     // Update is called once per frame
     void Update()
     {
         PlayerMove();
+
+        isClear = enemyManager.GetComponent<EnemyManager>().IsClear();
+        //if (clear) { Debug.Log("clear!"); }
     }
 }
