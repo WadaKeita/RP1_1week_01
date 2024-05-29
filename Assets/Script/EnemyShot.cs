@@ -8,6 +8,7 @@ public class EnemyManagement : MonoBehaviour
     [Header("敵の弾関連")]
     [SerializeField] float enemyShotSpeed = 2f; //敵の弾の発射スピード
     [SerializeField] GameObject enemyBullet;   //敵のリジッドボディ
+   // [SerializeField] GameObject explotion;
     [SerializeField] Transform firePos;         //敵の弾の発射ポイント
     [SerializeField] float shotThrehold = 1f;   //弾の発射間隔
     //[SerializeField] float shotTime = 0f;  
@@ -34,10 +35,10 @@ public class EnemyManagement : MonoBehaviour
     int enemyHpMin = 0;     //敵の最小HP
     public static int enemyAttackDamage { set; get; } //敵本体がプレイヤーに与えるダメージ
     public static int enemyShotPower = 1;  //弾の強さ
-    enum EnemyDamagetype { heal,damage} //敵のHPの計算方法
+    enum EnemyDamagetype { heal, damage } //敵のHPの計算方法
     int attackDamage = 1;
     //enum EnemyAttackDamage{Normal=1,PlayerFollowY=2,PlayerAttack=3}   //プレイヤーに与えるダメージ
-    
+
     #endregion
 
     #region var-EnemyHp
@@ -45,6 +46,11 @@ public class EnemyManagement : MonoBehaviour
     [SerializeField] int enemyHp = 10;
     [Header("本体接触時に与えるダメージ")]
     [SerializeField] int enemyDamage = 1;
+    #endregion
+
+    #region var-EnemyExplosion
+    [Header("敵の爆発エフェクト")]
+    [SerializeField] GameObject enemyExplosion;
     #endregion
 
 
@@ -87,7 +93,7 @@ public class EnemyManagement : MonoBehaviour
                 direction = -1;
             }
         }
-        if (transform.position.x- transform.localScale.x / 2 <= Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).x)
+        if (transform.position.x - transform.localScale.x / 2 <= Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).x)
         {
             if (transform.rotation.z < 0)
             {
@@ -105,25 +111,44 @@ public class EnemyManagement : MonoBehaviour
     }
 
     // 敵の当たり判定
-      void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         //プレイヤーと接触した場合
-        if (collision.gameObject.tag ==("Player"))
+        if (collision.gameObject.tag == ("Player"))
         {
+            //爆発処理
+           // EnemyExplosion(collision);
+
             //敵HPの管理
             EnemyHpChanged((int)EnemyDamagetype.damage, enemyHp, collision);
+
+            if (enemyHp == 0)
+            {
+                Instantiate(enemyExplosion,this.gameObject.transform.position, Quaternion.identity);
+                //Destroy(collision.gameObject);
+            }
         }
         //プレイヤーの弾と接触した場合
-        else if (collision.gameObject.tag ==("PlayerBullet"))
+        else if (collision.gameObject.tag == ("PlayerBullet"))
         {
+            //爆発処理
+            //nemyExplosion(collision);
+
+
             //敵のHp管理
             EnemyHpChanged((int)EnemyDamagetype.damage, enemyDamage, collision);
 
+            if (enemyHp == 0)
+            {
+                Instantiate(enemyExplosion, this.gameObject.transform.position, Quaternion.identity);
+                //Destroy(collision.gameObject);
+            }
+
         }
     }
-   // Update is called once per frame
+    // Update is called once per frame
 
-   void EnemyHpChanged(int damageType, int volume, Collider2D collider)
+    void EnemyHpChanged(int damageType, int volume, Collider2D collider)
     {
         //ダメージの種類で分岐
         switch (damageType)
@@ -152,6 +177,20 @@ public class EnemyManagement : MonoBehaviour
                 break;
         }
     }
+
+    //爆発処理
+    void EnemyExplosion(Collider2D collision)
+    {
+        //爆発エフェクトをコピー
+        Instantiate(enemyExplosion, gameObject.transform.position, Quaternion.identity);
+
+        //自身を破棄
+        Destroy(gameObject);
+
+        //接触したプレイヤーを破棄
+        //Destroy(collision.gameObject);
+    }
+
 
     void Update()
     {

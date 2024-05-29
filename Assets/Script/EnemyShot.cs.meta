@@ -3,7 +3,12 @@ guid: b68035a25f1f0674e856a703ff817dc2
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - enemyBullet: {instanceID: 0}
+  - firePos: {instanceID: 0}
+  - _LeftEdge: {instanceID: 0}
+  - _RightEdge: {instanceID: 0}
+  - enemyExplosion: {fileID: 5387783895413182677, guid: 307a0795a7bb5b04597b912a23c49200, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
